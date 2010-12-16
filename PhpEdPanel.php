@@ -36,39 +36,80 @@ class PhpEdPanel extends Object implements IDebugPanel {
 	 * @see IDebugPanel::getTab()
 	 */
 	public function getTab() {
+		$s = <<<EOF
+<span style="cursor:pointer;" onclick="phpedpanel.switchMode();return false;">
+<img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAArlBMVEX///
+8dYnkdY3kdY3gfZXkfZHggZXkiZnohZ3kkaHonansna3oqbXwqbXsrbnwsb3stcHw4VlMxTkogOTItTkU4Vk4xVkoo
+QTkxTkUoSD0oRTktSD0jPjIjQTItTj0uaiI6fCtTjTySwX9zp1iWw3mVwnmfx4GmyYeuzpGvzpG10pnb68y20pm40p
+y40p3G3K7V58Lb6szn89vH3K/G267H26/L37TV5sLH266xrrEE7PJGAAAAAXRSTlMAQObYZgAAAJBJREFUeNptT4s
+OgjAQO3zjczCcMBV8gjoVRUX7/z8mamYm8ZIm1+Z6aYn+zrAsuAUcg2MMIl8z4XoBY5AwDlh2Y4wRH2mlf4nUPR0A
+oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPgt01Qaie+2xNk0Qw09mh70AAAAABJRU5ErkJggg=="
+><span id="phpedpaneltext">Off</span>
+</span>
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	phpedpanel = {
+		setCookie : function (name,value,days) {
+			 if (days) {
+				  var date = new Date();
+				  date.setTime(date.getTime()+(days*24*60*60*1000));
+				  var expires = "; expires="+date.toGMTString();
+			 }
+			 else var expires = "";
+			 document.cookie = name+"="+value+expires+"; path=/";
+		 },
 
-		$link = $_SERVER["REQUEST_URI"];
-
-		$dbgIsOn = FALSE;
-		if (preg_match('/DBGSESSID=(?P<SESSID>-{0,1}[\d]+)/s', $link, $matches)) {
-			if ($matches['SESSID'] !== '-1') {
-				$dbgIsOn = TRUE;
+		getCookie : function (name) {
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for(var i=0;i < ca.length;i++) {
+				var c = ca[i];
+				while (c.charAt(0)==' ') c = c.substring(1,c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
 			}
-		} else {
-			if (strpos($link, '?') > 0) {
-				$link .= "&DBGSESSID=". self::$defaultSESSID;
+			return null;
+		 },
+
+		deleteCookie: function (name) {
+			 setCookie(name,"",-1);
+		},
+
+		switchMode: function () {
+			var id = phpedpanel.getCookie('DBGSESSID');
+			var oldid = phpedpanel.getCookie('DBGSESSID_OLD');
+			if (!oldid) oldid = 1;
+
+			if (id != -1) {
+				phpedpanel.setCookie('DBGSESSID',-1);
+				phpedpanel.setCookie('DBGSESSID_OLD', id);
 			} else {
-				$link .= "?DBGSESSID=". self::$defaultSESSID;
+				phpedpanel.setCookie('DBGSESSID', oldid);
 			}
-		}
+			phpedpanel.redraw();
+		},
 
-		if ($dbgIsOn === FALSE) {
-			$title = 'PhpEd Debugger is inactive. Click to switch it on.';
-			$text  = 'Off';
-			$style = 'color:gray;';
-			$sessId = self::$defaultSESSID;
-			$script = '';
-		} else {
-			$title = 'PhpEd Debugger is active. Click to switch it off.';
-			$text  = 'On';
-			$style = 'color:green;font-weight:bold;';
-			$sessId = -1;
-
-		}
-		$script = "document.cookie = 'DBGSESSID=$sessId; expires=Thu, 2 Aug 2050 20:47:11 UTC; path=/'";
-		$link = preg_replace("/DBGSESSID=(-{0,1}[\d]+)/s", "DBGSESSID=$sessId", $link);
-
-		$s = "<span style=\"cursor:pointer;{$style}\"onclick=\"$script;window.location='{$link}';\"title=\"{$title}\"}><img src=\"data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAArlBMVEX///8dYnkdY3kdY3gfZXkfZHggZXkiZnohZ3kkaHonansna3oqbXwqbXsrbnwsb3stcHw4VlMxTkogOTItTkU4Vk4xVkooQTkxTkUoSD0oRTktSD0jPjIjQTItTj0uaiI6fCtTjTySwX9zp1iWw3mVwnmfx4GmyYeuzpGvzpG10pnb68y20pm40py40p3G3K7V58Lb6szn89vH3K/G267H26/L37TV5sLH266xrrEE7PJGAAAAAXRSTlMAQObYZgAAAJBJREFUeNptT4sOgjAQO3zjczCcMBV8gjoVRUX7/z8mamYm8ZIm1+Z6aYn+zrAsuAUcg2MMIl8z4XoBY5AwDlh2Y4wRH2mlf4nUPR0AoXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPgt01Qaie+2xNk0Qw09mh70AAAAABJRU5ErkJggg==\">$text</span>";
+		redraw: function() {
+			var $ = Nette.Q.factory;
+			d = $('#phpedpaneltext').dom();
+			if (phpedpanel.getCookie('DBGSESSID') == -1) {
+				d.style.color = "#888";
+				d.innerHTML = "Off";
+				d.title = "PhpED Debugger is inactive. Click to activate it.";
+				d.style.fontWeight = "normal";
+			} else {
+				d.style.color = "green";
+				d.style.fontWeight = "bold";
+				d.innerHTML = "On";
+				d.title = "PhpED Debugger is active. Next click or submit will be controled by debugger. Click this icon to deactivate PhpED debugger";
+			}
+		},
+	}
+	phpedpanel.redraw();
+})();
+/* ]]> */
+</script>
+EOF;
 		return $s;
 	}
 
@@ -77,7 +118,8 @@ class PhpEdPanel extends Object implements IDebugPanel {
 	 * @return string
 	 * @see IDebugPanel::getPanel()
 	 */
-	public function getPanel() {}
+	public function getPanel() {
+	}
 
 	/**
 	 * Returns panel ID.
