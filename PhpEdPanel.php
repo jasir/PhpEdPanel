@@ -19,14 +19,14 @@ class PhpEdPanel extends Object implements IDebugPanel {
 
 	static public $defaultSESSID = 1;
 
-	static private $instance;
+	static private $registered = FALSE;
 
 	public static function register() {
 
 		//register panel only once
-		if (!self::$instance) {
-			self::$instance = new static;
-			\Nette\Debug::addPanel(self::$instance);
+		if (!self::$registered) {
+			\Nette\Debug::addPanel(new self);
+			self::$registered = TRUE;
 		}
 	}
 
@@ -36,6 +36,7 @@ class PhpEdPanel extends Object implements IDebugPanel {
 	 * @see IDebugPanel::getTab()
 	 */
 	public function getTab() {
+		$defaultSESSID = self::$defaultSESSID;
 		$s = <<<EOF
 <span style="cursor:pointer;" onclick="phpedpanel.switchMode();return false;">
 <img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAArlBMVEX///
@@ -71,14 +72,10 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 			return null;
 		 },
 
-		deleteCookie: function (name) {
-			 setCookie(name,"",-1);
-		},
-
 		switchMode: function () {
 			var id = phpedpanel.getCookie('DBGSESSID');
 			var oldid = phpedpanel.getCookie('DBGSESSID_OLD');
-			if (!oldid) oldid = 1;
+			if (!oldid) oldid = {$defaultSESSID};
 
 			if (id != -1) {
 				phpedpanel.setCookie('DBGSESSID',-1);
@@ -103,7 +100,7 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 				d.innerHTML = "On";
 				d.title = "PhpED Debugger is active. Next click or submit will be controled by debugger. Click this icon to deactivate PhpED debugger";
 			}
-		},
+		}
 	}
 	phpedpanel.redraw();
 })();
