@@ -98,7 +98,7 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 				d.style.color = "green";
 				d.style.fontWeight = "bold";
 				d.innerHTML = "On";
-				d.title = "PhpED Debugger is active. Next click or submit will be controled by debugger. Click this icon to deactivate PhpED debugger";
+				d.title = "PhpED Debugger is active. Successive server requests will be controled by debugger. Click this icon to deactivate PhpED debugger";
 			}
 		}
 	}
