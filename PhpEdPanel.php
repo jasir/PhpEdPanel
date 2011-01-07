@@ -126,4 +126,17 @@ EOF;
 	public function getId() {
 		return __CLASS__;
 	}
+
+	/**
+	 * Determines if PhpED debugger is active
+	 * see http://forum.nusphere.com/code-executed-only-when-testing-in-the-debugger-t5546.html
+	 * @returns boolean
+	 */
+	public static function IsDebuggerActive() {
+		return(
+			(isset($_GET['DBGSESSID']) && (int)$_GET['DBGSESSID'] >= 0) ||
+			(isset($_ENV['DBGSESSID']) && (int)$_ENV['DBGSESSID'] >= 0) ||
+			(isset($_COOKIE['DBGSESSID']) && (int)$_COOKIE['DBGSESSID'] >= 0)
+		);
+	}
 }
