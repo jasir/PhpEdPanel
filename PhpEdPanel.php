@@ -4,7 +4,7 @@
  * Allows switch off/on a PhpEd debugger
  *
  * @author jasir
- * @license Do what you want
+ * @license WTFPL http://en.wikipedia.org/wiki/WTFPL
   */
 namespace Extras\Debug;
 
