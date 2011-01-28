@@ -51,14 +51,8 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 /* <![CDATA[ */
 (function() {
 	phpedpanel = {
-		setCookie : function (name,value,days) {
-			 if (days) {
-				  var date = new Date();
-				  date.setTime(date.getTime()+(days*24*60*60*1000));
-				  var expires = "; expires="+date.toGMTString();
-			 }
-			 else var expires = "";
-			 document.cookie = name+"="+value+expires+"; path=/";
+		setCookie : function (name, value) {
+			document.cookie = name + "=" + value + "; path=/";
 		 },
 
 		getCookie : function (name) {
@@ -69,27 +63,29 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 				while (c.charAt(0)==' ') c = c.substring(1,c.length);
 				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
 			}
-			return null;
+			return '';
 		 },
 
 		switchMode: function () {
-			var id = phpedpanel.getCookie('DBGSESSID');
-			var oldid = phpedpanel.getCookie('DBGSESSID_OLD');
-			if (!oldid) oldid = {$defaultSESSID};
-
-			if (id != -1) {
-				phpedpanel.setCookie('DBGSESSID',-1);
-				phpedpanel.setCookie('DBGSESSID_OLD', id);
+			if (phpedpanel.isActive()) {
+				phpedpanel.setCookie('DBGSESSID_OLD', phpedpanel.getCookie('DBGSESSID'));
+				phpedpanel.setCookie('DBGSESSID', '');
 			} else {
-				phpedpanel.setCookie('DBGSESSID', oldid);
+				phpedpanel.setCookie('DBGSESSID', phpedpanel.getCookie('DBGSESSID_OLD') != '' ? phpedpanel.getCookie('DBGSESSID_OLD'): {$defaultSESSID})
 			}
 			phpedpanel.redraw();
+			alert('id=' + phpedpanel.getCookie('DBGSESSID') +  ' oldid=' + phpedpanel.getCookie('DBGSESSID_OLD'));
+		},
+
+		isActive: function () {
+			return phpedpanel.getCookie('DBGSESSID') != '' ;
 		},
 
 		redraw: function() {
 			var $ = Nette.Q.factory;
 			d = $('#phpedpaneltext').dom();
-			if (phpedpanel.getCookie('DBGSESSID') == -1) {
+
+			if (!phpedpanel.isActive()) {
 				d.style.color = "#888";
 				d.innerHTML = "Off";
 				d.title = "PhpED Debugger is inactive. Click to activate it.";
