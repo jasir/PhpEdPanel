@@ -74,7 +74,6 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 				phpedpanel.setCookie('DBGSESSID', phpedpanel.getCookie('DBGSESSID_OLD') != '' ? phpedpanel.getCookie('DBGSESSID_OLD'): {$defaultSESSID})
 			}
 			phpedpanel.redraw();
-			alert('id=' + phpedpanel.getCookie('DBGSESSID') +  ' oldid=' + phpedpanel.getCookie('DBGSESSID_OLD'));
 		},
 
 		isActive: function () {
