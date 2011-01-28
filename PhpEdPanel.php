@@ -89,7 +89,7 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 		redraw: function() {
 			var $ = Nette.Q.factory;
 			d = $('#phpedpaneltext').dom();
-			if (phpedpanel.getCookie('DBGSESSID') < 1) {
+			if (phpedpanel.getCookie('DBGSESSID') == -1) {
 				d.style.color = "#888";
 				d.innerHTML = "Off";
 				d.title = "PhpED Debugger is inactive. Click to activate it.";
