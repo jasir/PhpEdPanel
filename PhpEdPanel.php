@@ -77,7 +77,7 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 		},
 
 		isActive: function () {
-			return phpedpanel.getCookie('DBGSESSID') != '' ;
+			return phpedpanel.getCookie('DBGSESSID') != '' &&  phpedpanel.getCookie('DBGSESSID') != -1;
 		},
 
 		redraw: function() {
