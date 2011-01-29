@@ -87,13 +87,13 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 			if (!phpedpanel.isActive()) {
 				d.style.color = "#888";
 				d.innerHTML = "Off";
-				d.title = "PhpED Debugger is inactive. Click to activate it.";
+				d.title = "PhpED Debugger is inactive. Click to activate.";
 				d.style.fontWeight = "normal";
 			} else {
 				d.style.color = "green";
 				d.style.fontWeight = "bold";
 				d.innerHTML = "On";
-				d.title = "PhpED Debugger is active. Successive server requests will be controled by debugger. Click this icon to deactivate PhpED debugger";
+				d.title = "PhpED Debugger is active. Successive server requests will be controled by debugger. Click to deactivate.";
 			}
 		}
 	}
