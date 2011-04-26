@@ -9,13 +9,13 @@
 namespace Extras\Debug;
 
 use \Nette\Object;
-use \Nette\IDebugPanel;
+use Nette\Diagnostics\IBarPanel;
 use \Nette\Environment;
-use \Nette\Debug;
-use \Nette\Web\Html;
-use \Nette\Application\RenderResponse;
+use Nette\Diagnostics\Debugger;
+use Nette\Utils\Html;
+use Nette\Application\Responses\TextResponse;
 
-class PhpEdPanel extends Object implements IDebugPanel {
+class PhpEdPanel extends Object implements IBarPanel {
 
 	static public $defaultSESSID = 1;
 
@@ -25,7 +25,7 @@ class PhpEdPanel extends Object implements IDebugPanel {
 
 		//register panel only once
 		if (!self::$registered) {
-			\Nette\Debug::addPanel(new self);
+			Debugger::$bar->addPanel(new self);
 			self::$registered = TRUE;
 		}
 	}
