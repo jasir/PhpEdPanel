@@ -25,7 +25,7 @@ class PhpEdPanel extends Object implements IBarPanel {
 
 		//register panel only once
 		if (!self::$registered) {
-			Debugger::$bar->addPanel(new self);
+			Debugger::addPanel(new self);
 			self::$registered = TRUE;
 		}
 	}
@@ -81,7 +81,7 @@ oXg9cwi9c6byY1e7fNk+qcV1n3S0ZWKn+WO5jW0efgSJ1mG3ma+aeCci8lBrJPF6VtdJCnCrWrHM8FPg
 		},
 
 		redraw: function() {
-			var $ = Nette.Q.factory;
+			var $ = Nette.Query.factory;
 			d = $('#phpedpaneltext').dom();
 
 			if (!phpedpanel.isActive()) {
@@ -111,6 +111,7 @@ EOF;
 	 * @see IDebugPanel::getPanel()
 	 */
 	public function getPanel() {
+		return FALSE;
 	}
 
 	/**
