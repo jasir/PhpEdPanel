@@ -1,20 +1,20 @@
 {
-	"name": "jasir/phpedpanel",
-	"description": "Panel for Nette debugger",
-	"keywords": ["nette", "debugging", "phped"],
-	"homepage": "http://github.com/jasir/PhpEdPanel",
-	"license": ["WTFPL", "BSD-3", "GPLv2", "GPLv3"],
-	"authors": [
-		{
-			"name": "jasir"
-		}
-	],
-	"require": {
-		 "php" : ">=5.3.2",
-		 "nette/nette" : "dev-master"
-	},
+    "name": "jasir/phpedpanel",
+    "description": "Panel for Nette debugger",
+    "keywords": ["nette", "debugging", "phped"],
+    "homepage": "http://github.com/jasir/PhpEdPanel",
+    "license": ["WTFPL", "BSD-3", "GPLv2", "GPLv3"],
+    "authors": [
+        {
+            "name": "jasir"
+        }
+    ],
+    "require": {
+         "php" : ">=5.3.2",
+         "nette/nette" : "2.*"
+    },
 
-	"autoload": {
-		"classmap": ["/"]
-	}
+    "autoload": {
+        "classmap": ["/"]
+    }
 }
